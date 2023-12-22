@@ -2,7 +2,7 @@
 
 namespace dnd_manager_webapplication.Data
 {
-    public class PartyRepository
+    public class PartyRepository : IPartyRepository
     {
         ApplicationDbContext context;
 
