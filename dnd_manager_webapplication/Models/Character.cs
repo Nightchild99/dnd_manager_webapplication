@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace dnd_manager_webapplication.Models
 {
@@ -50,6 +51,11 @@ namespace dnd_manager_webapplication.Models
         [Required]
         [Range(0, 20)]
         public int Level { get; set; }
+
+        public string OwnerId { get; set; }
+
+        [NotMapped]
+        public virtual SiteUser Owner { get; set; }
 
         [StringLength(200)]
         public string? ImageFileName { get; set; }

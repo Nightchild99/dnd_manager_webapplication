@@ -1,16 +1,21 @@
 ﻿using dnd_manager_webapplication.Data;
 using dnd_manager_webapplication.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace dnd_manager_webapplication.Controllers
 {
     public class PartyController : Controller
     {
-        IPartyRepository _repo;
+        private readonly IPartyRepository _repo;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly ILogger<PartyController> _logger;
 
-        public PartyController(IPartyRepository repo)
+        public PartyController(IPartyRepository repo, UserManager<IdentityUser> userManager, ILogger<PartyController> logger)
         {
             this._repo = repo;
+            _userManager = userManager;
+            _logger = logger;
         }
 
         public IActionResult Index()
@@ -38,6 +43,7 @@ namespace dnd_manager_webapplication.Controllers
                 character.ContentType = picturedata.ContentType;
             }
 
+            character.OwnerId = _userManager.GetUserId(this.User);
             character.Description = $"{character.Name} is a level {character.Level} {character.Race} {character.Class}.";
 
             //var errors = ModelState.Values.SelectMany(v => v.Errors);
