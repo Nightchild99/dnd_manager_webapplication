@@ -1,17 +1,19 @@
 ﻿using dnd_manager_webapplication.Data;
 using dnd_manager_webapplication.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace dnd_manager_webapplication.Controllers
 {
     public class PartyController : Controller
     {
         private readonly IPartyRepository _repo;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<SiteUser> _userManager;
         private readonly ILogger<PartyController> _logger;
 
-        public PartyController(IPartyRepository repo, UserManager<IdentityUser> userManager, ILogger<PartyController> logger)
+        public PartyController(IPartyRepository repo, UserManager<SiteUser> userManager, ILogger<PartyController> logger)
         {
             this._repo = repo;
             _userManager = userManager;
@@ -32,6 +34,8 @@ namespace dnd_manager_webapplication.Controllers
         [HttpPost]
         public IActionResult Create(Character character, IFormFile picturedata)
         {
+            character.OwnerId = _userManager.GetUserId(this.User);
+
             using (var stream = picturedata.OpenReadStream())
             {
                 byte[] buffer = new byte[picturedata.Length];
@@ -43,10 +47,9 @@ namespace dnd_manager_webapplication.Controllers
                 character.ContentType = picturedata.ContentType;
             }
 
-            character.OwnerId = _userManager.GetUserId(this.User);
             character.Description = $"{character.Name} is a level {character.Level} {character.Race} {character.Class}.";
 
-            //var errors = ModelState.Values.SelectMany(v => v.Errors);
+            var errors = ModelState.Values.SelectMany(v => v.Errors);
 
             if (!ModelState.IsValid)
             {
