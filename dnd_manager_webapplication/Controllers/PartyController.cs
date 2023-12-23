@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Diagnostics;
 
 namespace dnd_manager_webapplication.Controllers
 {
@@ -32,9 +33,11 @@ namespace dnd_manager_webapplication.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Character character, IFormFile picturedata)
+        public async Task<IActionResult> Create(Character character, IFormFile picturedata)
         {
             character.OwnerId = _userManager.GetUserId(this.User);
+            character.Owner = await _userManager.GetUserAsync(this.User);
+            character.Description = $"{character.Name} is a level {character.Level} {character.Race} {character.Class}.";
 
             using (var stream = picturedata.OpenReadStream())
             {
@@ -47,14 +50,12 @@ namespace dnd_manager_webapplication.Controllers
                 character.ContentType = picturedata.ContentType;
             }
 
-            character.Description = $"{character.Name} is a level {character.Level} {character.Race} {character.Class}.";
+            //var errors = ModelState.Values.SelectMany(v => v.Errors);
 
-            var errors = ModelState.Values.SelectMany(v => v.Errors);
-
-            if (!ModelState.IsValid)
-            {
-                return View(character);
-            }
+            //if (!ModelState.IsValid)
+            //{
+            //    return View(character);
+            //}
             _repo.Create(character);
             return RedirectToAction(nameof(Index));
         }
@@ -69,10 +70,10 @@ namespace dnd_manager_webapplication.Controllers
         [HttpPost]
         public IActionResult Update(Character character)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(character);
-            }
+            //if (!ModelState.IsValid)
+            //{
+            //    return View(character);
+            //}
             _repo.Update(character);
             return RedirectToAction(nameof(Index));
         }
@@ -109,6 +110,20 @@ namespace dnd_manager_webapplication.Controllers
                 _repo.LevelUp(name);
                 return RedirectToAction(nameof(Index));
             }
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Privacy()
+        {
+            var principal = this.User;
+            var user = await _userManager.GetUserAsync(principal);
+            return View();
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }
