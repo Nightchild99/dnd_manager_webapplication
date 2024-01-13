@@ -1,5 +1,8 @@
-﻿@using dnd_manager_webapplication.Models
+﻿@using Microsoft.AspNetCore.Identity;
+@using dnd_manager_webapplication.Models
 @model IEnumerable<Character>
+@inject SignInManager<SiteUser> SignInManager
+@inject UserManager<SiteUser> UserManager
 
 <h1>Manage your Party!</h1>
 
@@ -21,10 +24,13 @@
         @: <td>@item.Race</td>
         @: <td>@item.Class</td>
         @: <td>@item.Description</td>
-        @: <td>
-        @:    <a href="/party/levelup?name=@item.Name">Level Up</a>
-        @:    <a href="/party/delete?name=@item.Name">Delete</a>
-        @:    <a href="/party/update?name=@item.Name">Modify</a>
+        @: <td>  
+        @:    @if(item.OwnerId == UserManager.GetUserId(User))
+        {
+                <a href="/party/levelup?name=@item.Name">Level Up</a>
+                <a href="/party/update?name=@item.Name">Modify</a>
+                <a href="/party/delete?name=@item.Name">Death</a>
+        }
         @: </td>
         @: </tr>
     }
