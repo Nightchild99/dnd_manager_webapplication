@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 
@@ -53,9 +54,11 @@ namespace dnd_manager_webapplication.Models
         [Range(0, 20)]
         public int Level { get; set; }
 
+        [ForeignKey(nameof (Owner))]
         public string OwnerId { get; set; }
 
         [NotMapped]
+        [ValidateNever]
         public virtual SiteUser Owner { get; set; }
 
         [StringLength(200)]

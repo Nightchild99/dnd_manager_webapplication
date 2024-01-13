@@ -95,6 +95,9 @@ namespace dnd_manager_webapplication.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            [Display(Name = "Picture")]
+            public IFormFile File { get; set; }
         }
 
 
@@ -113,6 +116,15 @@ namespace dnd_manager_webapplication.Areas.Identity.Pages.Account
                 var user = CreateUser();
                 user.FirstName = Input.FirstName;
                 user.LastName = Input.LastName;
+
+                user.ContentType = Input.File.ContentType;
+                byte[] data = new byte[(int)Input.File.Length];
+                using (var stream = Input.File.OpenReadStream())
+                {
+                    stream.Read(data, 0, data.Length);
+                }
+                user.Data = data;
+
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);

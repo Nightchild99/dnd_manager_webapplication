@@ -1,4 +1,5 @@
 ﻿using dnd_manager_webapplication.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace dnd_manager_webapplication.Data
 {

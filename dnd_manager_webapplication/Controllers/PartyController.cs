@@ -98,6 +98,12 @@ namespace dnd_manager_webapplication.Controllers
             }
         }
 
+        public async Task<IActionResult> GetUserImage(string userid)
+        {
+            var user = _userManager.Users.FirstOrDefault(t => t.Id == userid);
+            return new FileContentResult(user.Data, user.ContentType);
+        }
+
         [HttpGet]
         public IActionResult LevelUp(string name)
         {
