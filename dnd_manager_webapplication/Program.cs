@@ -34,6 +34,12 @@ builder.Services.AddDefaultIdentity<SiteUser>(options =>
 builder.Services.AddControllersWithViews();
 builder.Services.AddSignalR();
 
+builder.Services.AddAuthentication().AddFacebook(opt =>
+{
+    opt.AppId = "7135452379834157";
+    opt.AppSecret = "f14f1658f43876681bba860de0b63707";
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
