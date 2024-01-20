@@ -23,61 +23,6 @@ namespace dnd_manager_webapplication.Controllers
             _logger = logger;
         }
 
-        #region Admin Functions
-
-        public async Task<IActionResult> DelegateAdmin()
-        {
-            var principal = this.User;
-            var user = await _userManager.GetUserAsync(principal);
-            var role = new IdentityRole()
-            {
-                Name = "Admin"
-            };
-            if (!await _roleManager.RoleExistsAsync("Admin"))
-            {
-                await _roleManager.CreateAsync(role);
-            }
-            await _userManager.AddToRoleAsync(user, "Admin");
-            return RedirectToAction(nameof(Index));
-        }
-
-        [Authorize(Roles = "Admin")]
-        public IActionResult Admin()
-        {
-            return View(this._repo.Read());
-        }
-
-        [Authorize(Roles = "Admin")]
-        public IActionResult AdminDelete(string name)
-        {
-            _repo.Delete(name);
-            return RedirectToAction(nameof(Index));
-        }
-
-        [Authorize(Roles = "Admin")]
-        public IActionResult Users()
-        {
-            return View(_userManager.Users);
-        }
-
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GrantAdmin(string uid)
-        {
-            var user = _userManager.Users.FirstOrDefault(t => t.Id == uid);
-            await _userManager.AddToRoleAsync(user, "Admin");
-            return RedirectToAction(nameof(Users));
-        }
-
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> RemoveAdmin(string uid)
-        {
-            var user = _userManager.Users.FirstOrDefault(t => t.Id == uid);
-            await _userManager.RemoveFromRoleAsync(user, "Admin");
-            return RedirectToAction(nameof(Users));
-        }
-
-        #endregion
-
         public IActionResult Index()
         {
             return View(this._repo.Read());
