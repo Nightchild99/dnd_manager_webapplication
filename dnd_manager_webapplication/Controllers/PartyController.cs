@@ -107,12 +107,6 @@ namespace dnd_manager_webapplication.Controllers
                 character.ContentType = picturedata.ContentType;
             }
 
-            //var errors = ModelState.Values.SelectMany(v => v.Errors);
-
-            //if (!ModelState.IsValid)
-            //{
-            //    return View(character);
-            //}
             _repo.Create(character);
             return RedirectToAction(nameof(Index));
         }
@@ -127,10 +121,6 @@ namespace dnd_manager_webapplication.Controllers
         [HttpPost]
         public IActionResult Update(Character character)
         {
-            //if (!ModelState.IsValid)
-            //{
-            //    return View(character);
-            //}
             _repo.Update(character);
             return RedirectToAction(nameof(Index));
         }

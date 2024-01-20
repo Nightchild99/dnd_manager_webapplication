@@ -62,6 +62,15 @@ namespace dnd_manager_webapplication.Models
         [ValidateNever]
         public virtual SiteUser Owner { get; set; }
 
+        [ForeignKey(nameof(BackgroundID))]
+        public int BackgroundID { get; set; }
+
+        [NotMapped]
+        public virtual Background Background { get; set; }
+
+        [NotMapped]
+        public string BackGroundHelper { get; set; }
+
         [StringLength(200)]
         [JsonIgnore]
         public string? ImageFileName { get; set; }

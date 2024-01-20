@@ -18,6 +18,9 @@
     @Html.LabelFor(t => t.Class)
     @Html.DropDownListFor(t => t.Class, Html.GetEnumSelectList(typeof(Classes)))
 
+    @Html.LabelFor(t => t.BackGroundHelper)
+    @Html.DropDownListFor(t => t.BackGroundHelper, Html.GetEnumSelectList(typeof(Settings)))
+
     <label>Picture</label>
     <input type="file" name="picturedata" />
     <input type="submit" value="Create" />

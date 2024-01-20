@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using dnd_manager_webapplication.Data;
 
@@ -11,9 +12,10 @@ using dnd_manager_webapplication.Data;
 namespace dnd_manager_webapplication.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240120142944_background")]
+    partial class background
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,10 +32,9 @@ namespace dnd_manager_webapplication.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
 
-                    b.Property<string>("Name")
-                        .IsRequired()
+                    b.Property<int>("Name")
                         .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("int");
 
                     b.HasKey("ID");
 
@@ -42,43 +43,43 @@ namespace dnd_manager_webapplication.Migrations
                     b.HasData(
                         new
                         {
-                            ID = 1,
-                            Name = "Forgotten Realms"
+                            ID = -1,
+                            Name = 0
                         },
                         new
                         {
-                            ID = 2,
-                            Name = "Greyhawk"
+                            ID = -2,
+                            Name = 3
                         },
                         new
                         {
-                            ID = 3,
-                            Name = "Spelljammer"
+                            ID = -3,
+                            Name = 6
                         },
                         new
                         {
-                            ID = 4,
-                            Name = "Ravenloft"
+                            ID = -4,
+                            Name = 4
                         },
                         new
                         {
-                            ID = 5,
-                            Name = "Dark Sun"
+                            ID = -5,
+                            Name = 7
                         },
                         new
                         {
-                            ID = 6,
-                            Name = "Planescape"
+                            ID = -6,
+                            Name = 5
                         },
                         new
                         {
-                            ID = 7,
-                            Name = "Dragonlance"
+                            ID = -7,
+                            Name = 2
                         },
                         new
                         {
-                            ID = 8,
-                            Name = "Eberron"
+                            ID = -8,
+                            Name = 1
                         });
                 });
 

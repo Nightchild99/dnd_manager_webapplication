@@ -14,6 +14,8 @@ namespace dnd_manager_webapplication.Data
 
         public void Create(Character character)
         {
+            character.Background = context.Backgrounds.Where(t => t.ID == (int.Parse(character.BackGroundHelper) + 1)).FirstOrDefault();
+            character.BackgroundID = character.Background.ID;
             context.Characters.Add(character);
             context.SaveChanges();
         }
